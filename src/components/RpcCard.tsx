@@ -1,22 +1,29 @@
-import { Box, Heading, Text } from '@chakra-ui/react';
+import { Heading, Text, VStack } from '@chakra-ui/react';
 import { FC } from 'react';
 import { useRpcHealth } from '../hooks/useRpcHealth';
+import { Rpc } from '../utils';
 
 interface RpcCardProps {
-  rpcUrl: string;
-  name: string;
+  rpc: Rpc;
 }
 
-export const RpcCard: FC<RpcCardProps> = ({ rpcUrl, name }) => {
-  const { status } = useRpcHealth(rpcUrl);
+export const RpcCard: FC<RpcCardProps> = ({ rpc }) => {
+  const { url, label } = rpc;
+  const { status } = useRpcHealth(url);
 
   return (
-    <Box borderWidth='thin' padding='2' rounded='md'>
-      <Heading size='md'>{name}</Heading>
-      <Text size='md' color={status === 'ok' ? 'green' : 'red'}>
-        {status}
+    <VStack borderWidth='thin' padding='4' rounded='md' alignItems='left'>
+      <Heading size='md'>{label}</Heading>
+      <Text
+        size='md'
+        color={
+          status === 'ok' ? 'green' : status === 'unknown' ? 'orange' : 'red'
+        }
+        textTransform='capitalize'
+      >
+        {status} {status === 'ok' ? '✅' : status === 'unknown' ? '⚠️' : '❌'}
       </Text>
-      <Text color='slategray'>{rpcUrl}</Text>
-    </Box>
+      <Text color='slategray'>{url}</Text>
+    </VStack>
   );
 };

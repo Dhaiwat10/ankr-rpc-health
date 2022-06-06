@@ -16,7 +16,7 @@ export const useRpcHealth = (rpcUrl: string) => {
       try {
         const response = await fetch(rpcUrl, {
           // @ts-expect-error
-          body: [{ method: 'eth_chainId', id: 125, jsonrpc: '2.0' }],
+          body: [{ method: 'eth_blockNumber', id: 127, jsonrpc: '2.0' }],
           headers: {
             'Content-Type': 'application/json',
           },
