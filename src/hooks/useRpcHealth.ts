@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 interface RpcHealth {
   status: 'ok' | 'error' | 'unknown';
   error?: string | null;
+  responseTime?: number;
 }
 
 export const useRpcHealth = (rpcUrl: string) => {
@@ -14,6 +15,7 @@ export const useRpcHealth = (rpcUrl: string) => {
   useEffect(() => {
     const fetchHealth = async () => {
       try {
+        const startTime = new Date().getTime();
         const response = await fetch(rpcUrl, {
           // @ts-expect-error
           body: [{ method: 'eth_blockNumber', id: 127, jsonrpc: '2.0' }],
@@ -22,10 +24,13 @@ export const useRpcHealth = (rpcUrl: string) => {
           },
           method: 'POST',
         });
+        const endTime = new Date().getTime();
+        const responseTime = endTime - startTime;
         const data = await response.json();
         setHealth({
           status: 'ok',
           error: null,
+          responseTime,
         });
       } catch (error) {
         setHealth({
