@@ -36,4 +36,8 @@ export const rpcs: Rpc[] = [
     label: 'Arbitrum',
     url: 'https://rpc.ankr.com/arbitrum',
   },
+  {
+    label: 'Binance Smart Chain',
+    url: 'https://rpc.ankr.com/bsc',
+  },
 ];
