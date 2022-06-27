@@ -15,7 +15,7 @@ export const useRpcHealth = (rpcUrl: string) => {
   useEffect(() => {
     const fetchHealth = async () => {
       try {
-        const startTime = new Date().getTime();
+        const startTime = window.performance.now();
         const response = await fetch(rpcUrl, {
           // @ts-expect-error
           body: [{ method: 'eth_blockNumber', id: 127, jsonrpc: '2.0' }],
@@ -24,9 +24,8 @@ export const useRpcHealth = (rpcUrl: string) => {
           },
           method: 'POST',
         });
-        const endTime = new Date().getTime();
-        const responseTime = endTime - startTime;
-        const data = await response.json();
+        const endTime = window.performance.now();
+        const responseTime = Math.round(endTime - startTime);
         setHealth({
           status: 'ok',
           error: null,
